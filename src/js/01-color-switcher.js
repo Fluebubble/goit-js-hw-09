@@ -9,10 +9,10 @@ refs.stopBtn.disabled = true;
 let timerId = 0;
 
 refs.startBtn.addEventListener('click', () => {
+    refs.startBtn.disabled = true;
+    refs.stopBtn.disabled = false;
   timerId = setInterval(() => {
       document.body.style.backgroundColor = `${getRandomHexColor()}`;
-      refs.startBtn.disabled = true;
-      refs.stopBtn.disabled = false;
     }, 1000);
 });
 
