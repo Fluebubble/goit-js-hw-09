@@ -1,21 +1,3 @@
-// function createPromise(position, delay) {
-//   const shouldResolve = Math.random() > 0.3;
-//   if (shouldResolve) {
-//     // Fulfill
-//   } else {
-//     // Reject
-//   }
-// }
-
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
-}
-
 const refs = {
   form: document.querySelector('.form'),
   firstDelayInput: document.querySelector('[name="delay"]'),
@@ -24,56 +6,41 @@ const refs = {
   submitBtn: document.querySelector('[type="submit"]'),
 };
 
-let promiseCount = 0;
+function createPromise(position, delay) {
+
+  const shouldResolve = Math.random() > 0.3;
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
+
+  return promise;
+}
 
 refs.form.addEventListener('submit', e => {
   e.preventDefault();
   console.log('GO!');
+  let currentDelay = Number(refs.firstDelayInput.value);
+  for (let i = 1; i < Number(refs.amountInput.value) + 1; i++) {
+    console.log(refs.firstDelayInput.value);
+    console.log(currentDelay, typeof(currentDelay));
+
+    createPromise(i, currentDelay)
+      .then(result => {
+        console.log(
+          `✅ Fulfilled promise ${result.position} in ${result.delay}ms`
+        );
+      })
+      .catch(result => {
+        console.log(
+          `❌ Rejected promise ${result.position} in ${result.delay}ms`
+        );
+      });
+    currentDelay += Number(refs.delayStepInput.value);
+  }
 });
-
-// refs.submitBtn.addEventListener('click', () => {
-//   // let delay = refs.firstDelayInput.value;
-//   console.log(delay);
-// });
-
-// const isResolved = Math.random() < 0.5;
-
-// const p = new Promise((resolve, reject) => {
-//   setTimeout(() => {
-//     if (isResolved) {
-//       resolve('ebat, vse ZBS!)))');
-//     }
-
-//     reject('Ne, nihuya ne ok:(1');
-//   }, 1000);
-// });
-
-// p.then(
-//   successed => {
-//     console.log('1sec passed');
-
-//     timeOutSuccess(successed);
-//     console.log('2sec passed');
-
-//     return successed;
-//   },
-//   error => {
-//     console.log(error);
-//     return error;
-//   }
-// ).then(
-//   successed => {
-//     // console.log(successed);
-
-//     timeOutSuccess(successed);
-//   },
-//   error => {
-//     console.log(error);
-//   }
-// );
-
-// function timeOutSuccess(success) {
-//   setTimeout(() => {
-//     console.log(success);
-//   }, 2000);
-// }
