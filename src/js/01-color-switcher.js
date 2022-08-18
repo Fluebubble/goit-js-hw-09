@@ -4,7 +4,6 @@ const refs = {
     body: document.querySelector('body')
 }
 
-refs.stopBtn.disabled = true;
 
 let timerId = 0;
 
