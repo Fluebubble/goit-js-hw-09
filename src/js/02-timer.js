@@ -1,9 +1,9 @@
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
 let selectedDate = null;
-let isTimerOn = false; 
+let isTimerOn = false;
 
 const options = {
   enableTime: true,
@@ -12,31 +12,26 @@ const options = {
   minuteIncrement: 1,
 
   onClose(selectedDates) {
-
     console.log(selectedDates[0]);
     selectedDate = selectedDates[0];
-    
-    if (
-      Date.now() < selectedDates[0]) {
+
+    if (Date.now() < selectedDates[0]) {
       refs.start.disabled = false;
       Notiflix.Notify.success('Время выбрано верно');
       console.log(selectedDate);
     } else {
-      console.log("Выберите дату в будущем");
+      console.log('Выберите дату в будущем');
       Notiflix.Notify.failure('Выберите время в будущем');
     }
-
-    
   },
 };
 
-const fp = flatpickr("#datetime-picker", options);
-
+const fp = flatpickr('#datetime-picker', options);
 
 const timer = {
   startTimer(selectedDate) {
     if (isTimerOn) {
-      console.log("Timer is ON!!!");
+      console.log('Timer is ON!!!');
       return;
     }
     isTimerOn = true;
@@ -44,29 +39,37 @@ const timer = {
     refs.datePicker.disabled = true;
     timerId = setInterval(() => {
       const currentTime = Date.now();
-      refs.days.textContent = addLeadingZero(convertMs(selectedDate.getTime() - currentTime).days.toString());
-      refs.hours.textContent = addLeadingZero(convertMs(selectedDate.getTime() - currentTime).hours.toString());
-      refs.seconds.textContent = addLeadingZero(convertMs(selectedDate.getTime() - currentTime).seconds.toString());
-      refs.minutes.textContent = addLeadingZero(convertMs(selectedDate.getTime() - currentTime).minutes.toString());
+      refs.days.textContent = addLeadingZero(
+        convertMs(selectedDate.getTime() - currentTime).days.toString()
+      );
+      refs.hours.textContent = addLeadingZero(
+        convertMs(selectedDate.getTime() - currentTime).hours.toString()
+      );
+      refs.seconds.textContent = addLeadingZero(
+        convertMs(selectedDate.getTime() - currentTime).seconds.toString()
+      );
+      refs.minutes.textContent = addLeadingZero(
+        convertMs(selectedDate.getTime() - currentTime).minutes.toString()
+      );
 
       if (
-        refs.days.textContent === "00" &&
-        refs.hours.textContent === "00" &&
-        refs.seconds.textContent === "00" &&
-        refs.minutes.textContent === "00"
+        refs.days.textContent === '00' &&
+        refs.hours.textContent === '00' &&
+        refs.seconds.textContent === '00' &&
+        refs.minutes.textContent === '00'
       ) {
         // if (selectedDate > Date.now()) {
-        //   refs.start.disabled = false;    
-        // }       
+        //   refs.start.disabled = false;
+        // }
         clearInterval(timerId);
         isTimerOn = false;
         // refs.start.disabled = false;
         refs.datePicker.disabled = false;
         refs.stop.disabled = true;
       }
-    }, 1000)
-  }
-}
+    }, 1000);
+  },
+};
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -92,37 +95,36 @@ const refs = {
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
   seconds: document.querySelector('[data-seconds]'),
-  start: document.querySelector('[data-start]'),   
-  stop: document.querySelector('[data-stop]'),   
-  datePicker: document.querySelector('#datetime-picker')
-}
+  start: document.querySelector('[data-start]'),
+  stop: document.querySelector('[data-stop]'),
+  datePicker: document.querySelector('#datetime-picker'),
+};
 let timerId = null;
 refs.start.addEventListener('click', () => {
-  timer.startTimer(selectedDate);  
+  timer.startTimer(selectedDate);
   refs.stop.disabled = false;
-})
+});
 refs.start.disabled = true;
 refs.stop.disabled = true;
 
 refs.stop.addEventListener('click', () => {
-  stopTimer()
-})
+  stopTimer();
+});
 
 function stopTimer() {
   clearInterval(timerId);
   isTimerOn = false;
   if (selectedDate > Date.now()) {
-    refs.start.disabled = false;    
+    refs.start.disabled = false;
   }
   refs.stop.disabled = true;
   refs.datePicker.disabled = false;
-  refs.days.textContent = "00";
-  refs.hours.textContent = "00";
-  refs.seconds.textContent = "00";
-  refs.minutes.textContent = "00";
+  refs.days.textContent = '00';
+  refs.hours.textContent = '00';
+  refs.seconds.textContent = '00';
+  refs.minutes.textContent = '00';
 }
 
 function addLeadingZero(date) {
   return date.padStart(2, '0');
 }
-
