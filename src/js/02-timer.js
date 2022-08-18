@@ -58,12 +58,8 @@ const timer = {
         refs.seconds.textContent === '00' &&
         refs.minutes.textContent === '00'
       ) {
-        // if (selectedDate > Date.now()) {
-        //   refs.start.disabled = false;
-        // }
         clearInterval(timerId);
         isTimerOn = false;
-        // refs.start.disabled = false;
         refs.datePicker.disabled = false;
         refs.stop.disabled = true;
       }
